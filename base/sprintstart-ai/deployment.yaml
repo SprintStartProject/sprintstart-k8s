@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sprintstart-ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sprintstart-ai
+  template:
+    metadata:
+      labels:
+        app: sprintstart-ai
+    spec:
+      containers:
+        - name: sprintstart-ai
+          image: ghcr.io/sprintstartproject/sprintstart-ai:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: sprintstart-ai-env
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 30
+          volumeMounts:
+            - name: chroma-data
+              mountPath: /app/data
+      volumes:
+        - name: chroma-data
+          persistentVolumeClaim:
+            claimName: sprintstart-ai-chroma
