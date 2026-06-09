@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/SprintStartProject/sprintstart-k8s
     targetRevision: main
-    path: overlays/dev
+    path: overlays/dev/sprintstart-ai
   destination:
     server: https://kubernetes.default.svc
     namespace: sprintstart-dev

@@ -4,11 +4,8 @@ kind: Kustomization
 namespace: sprintstart
 
 resources:
-  - ../../base/sprintstart-ai
-  - ../../base/sprintstart-frontend
+  - ../../../base/sprintstart-frontend
 
 images:
-  - name: ghcr.io/sprintstartproject/sprintstart-ai
-    newTag: latest
   - name: ghcr.io/sprintstartproject/sprintstart-frontend
     newTag: latest
