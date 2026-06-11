@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sprintstart-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sprintstart-backend
+  template:
+    metadata:
+      labels:
+        app: sprintstart-backend
+    spec:
+      containers:
+        - name: sprintstart-backend
+          image: ghcr.io/sprintstartproject/sprintstart-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: sprintstart-backend-env
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 30
