@@ -18,7 +18,6 @@ spec:
           args:
             - start-dev
             - --import-realm
-            - --hostname-backchannel-dynamic=true
           ports:
             - containerPort: 8080
           envFrom:

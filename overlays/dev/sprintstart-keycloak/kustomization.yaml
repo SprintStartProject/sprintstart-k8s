@@ -5,3 +5,7 @@ namespace: sprintstart-dev
 
 resources:
   - ../../../base/sprintstart-keycloak
+
+images:
+  - name: ghcr.io/sprintstartproject/sprintstart-keycloak
+    newTag: dev

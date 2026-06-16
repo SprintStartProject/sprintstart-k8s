@@ -21,6 +21,9 @@ spec:
           envFrom:
             - secretRef:
                 name: sprintstart-postgres-env
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
           resources:
             requests:
               cpu: 100m
