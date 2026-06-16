@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: sprintstart-keycloak
 spec:
+  ingressClassName: nginx
   rules:
   - host: keycloak.sprintstart.local
     http:
