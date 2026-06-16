@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sprintstart-keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sprintstart-keycloak
+  template:
+    metadata:
+      labels:
+        app: sprintstart-keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: ghcr.io/sprintstartproject/sprintstart-keycloak:latest
+          args:
+            - start-dev
+            - --import-realm
+            - --hostname-backchannel-dynamic=true
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: sprintstart-keycloak-env
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 9000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          volumeMounts:
+            - name: realm-import
+              mountPath: /opt/keycloak/data/import
+      volumes:
+        - name: realm-import
+          configMap:
+            name: sprintstart-keycloak-realm
