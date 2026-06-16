@@ -4,6 +4,10 @@ metadata:
   name: sprintstart-keycloak
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - keycloak.sprintstart.local
+    secretName: sprintstart-tls
   rules:
   - host: keycloak.sprintstart.local
     http:

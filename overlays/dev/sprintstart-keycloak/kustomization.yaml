@@ -15,6 +15,9 @@ patches:
       - op: replace
         path: /spec/rules/0/host
         value: keycloak.dev.sprintstart.local
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: keycloak.dev.sprintstart.local
     target:
       kind: Ingress
       name: sprintstart-keycloak
