@@ -15,6 +15,7 @@ spec:
       containers:
         - name: sprintstart-ai
           image: ghcr.io/sprintstartproject/sprintstart-ai:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           envFrom:
