@@ -12,6 +12,8 @@ spec:
       labels:
         app: sprintstart-ai
     spec:
+      securityContext:
+        fsGroup: 1001
       containers:
         - name: sprintstart-ai
           image: ghcr.io/sprintstartproject/sprintstart-ai:latest
