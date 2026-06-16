@@ -9,12 +9,3 @@ resources:
 images:
   - name: ghcr.io/sprintstartproject/sprintstart-ai
     newTag: dev
-
-patches:
-  - patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 0
-    target:
-      kind: Deployment
-      name: sprintstart-ai
