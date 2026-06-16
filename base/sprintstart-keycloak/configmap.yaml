@@ -54,12 +54,14 @@ data:
           "redirectUris": [
             "http://localhost:3000/*",
             "http://localhost:5173/*",
-            "http://sprintstart.local/*"
+            "http://sprintstart.local/*",
+            "http://dev.sprintstart.local/*"
           ],
           "webOrigins": [
             "http://localhost:3000",
             "http://localhost:5173",
-            "http://sprintstart.local"
+            "http://sprintstart.local",
+            "http://dev.sprintstart.local"
           ],
           "defaultClientScopes": [
             "profile",

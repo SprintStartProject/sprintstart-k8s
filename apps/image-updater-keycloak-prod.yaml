@@ -1,0 +1,15 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: sprintstart-keycloak-prod
+  namespace: argocd
+spec:
+  commonUpdateSettings:
+    updateStrategy: digest
+  writeBackConfig:
+    method: argocd
+  applicationRefs:
+    - namePattern: sprintstart-keycloak-prod
+      images:
+        - alias: keycloak
+          imageName: ghcr.io/sprintstartproject/sprintstart-keycloak:latest

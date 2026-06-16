@@ -1,0 +1,15 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: sprintstart-ai-prod
+  namespace: argocd
+spec:
+  commonUpdateSettings:
+    updateStrategy: digest
+  writeBackConfig:
+    method: argocd
+  applicationRefs:
+    - namePattern: sprintstart-ai-prod
+      images:
+        - alias: ai
+          imageName: ghcr.io/sprintstartproject/sprintstart-ai:latest

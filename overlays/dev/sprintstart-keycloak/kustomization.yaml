@@ -9,3 +9,12 @@ resources:
 images:
   - name: ghcr.io/sprintstartproject/sprintstart-keycloak
     newTag: dev
+
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: keycloak.dev.sprintstart.local
+    target:
+      kind: Ingress
+      name: sprintstart-keycloak

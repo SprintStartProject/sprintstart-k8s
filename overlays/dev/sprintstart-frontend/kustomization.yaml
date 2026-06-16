@@ -9,3 +9,12 @@ resources:
 images:
   - name: ghcr.io/sprintstartproject/sprintstart-frontend
     newTag: dev
+
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: dev.sprintstart.local
+    target:
+      kind: Ingress
+      name: sprintstart-frontend
