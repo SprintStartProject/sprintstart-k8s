@@ -18,6 +18,9 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: dev.sprintstart.local
+      - op: add
+        path: /spec/ingressClassName
+        value: nginx
     target:
       kind: Ingress
       name: sprintstart-frontend

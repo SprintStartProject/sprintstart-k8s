@@ -4,6 +4,8 @@ metadata:
   name: sprintstart-ai
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: sprintstart-ai
