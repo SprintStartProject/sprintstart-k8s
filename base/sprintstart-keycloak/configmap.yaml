@@ -8,6 +8,7 @@ data:
       "realm": "sprintstart",
       "enabled": true,
       "displayName": "SprintStart",
+      "loginTheme": "sprintstart-frontend",
       "registrationAllowed": true,
       "rememberMe": true,
       "resetPasswordAllowed": true,
