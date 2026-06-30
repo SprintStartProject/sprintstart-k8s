@@ -6,6 +6,13 @@ namespace: sprintstart
 resources:
   - ../../../base/sprintstart-keycloak
 
+configMapGenerator:
+  - name: sprintstart-keycloak-realm
+    files:
+      - sprintstart-realm.json
+    options:
+      disableNameSuffixHash: true
+
 patches:
   - patch: |-
       - op: replace
