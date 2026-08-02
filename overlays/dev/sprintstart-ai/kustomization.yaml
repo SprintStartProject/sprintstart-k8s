@@ -10,15 +10,24 @@ images:
   - name: ghcr.io/sprintstartproject/sprintstart-ai
     newTag: dev
 
-# The base limit of 512Mi is not enough for bulk ingestion. Connecting a GitHub org and
-# embedding its artifacts pushes the service past the limit and the pod is OOMKilled
-# (exit code 137), which also tears down any in-flight SSE stream -- onboarding path
-# generation then fails with an opaque "java.io.IOException: closed".
+# The base limit of 512Mi is far too small. Two separate workloads exceed it:
+#
+#   - Bulk ingestion. Connecting a GitHub org and embedding its artifacts pushes the
+#     service past the limit and the pod is OOMKilled (exit code 137).
+#   - Onboarding path generation, whose footprint scales with the size of the indexed
+#     corpus. Against a fully indexed knowledge base (~3650 artifacts) this failed on
+#     3 of 3 attempts at 1Gi. It only appeared to work earlier because a broken sync
+#     had left ~88% of the corpus out of the index.
+#
+# Either kill also tears down any in-flight SSE stream, so the caller sees an opaque
+# "java.io.IOException: closed" that says nothing about memory. See
+# SprintStartProject/sprintstart-ai#148 for the underlying memory behaviour -- this is
+# headroom, not a fix.
 patches:
   - patch: |-
       - op: replace
         path: /spec/template/spec/containers/0/resources/limits/memory
-        value: 1Gi
+        value: 4Gi
     target:
       kind: Deployment
       name: sprintstart-ai
