@@ -9,3 +9,19 @@ resources:
 images:
   - name: ghcr.io/sprintstartproject/sprintstart-backend
     newTag: dev
+
+# The base limit of 512Mi leaves almost no headroom: the service idles at around 438Mi,
+# roughly 85% of the limit. Proxying a chat SSE stream is enough to push it over, and the
+# pod is then OOMKilled (exit code 137) -- the caller sees a 502 from nginx and the
+# service takes about 90s to come back.
+#
+# No JVM heap tuning is configured, so the container is running on defaults; sizing the
+# heap explicitly would be the better long-term fix than headroom alone.
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 1Gi
+    target:
+      kind: Deployment
+      name: sprintstart-backend
