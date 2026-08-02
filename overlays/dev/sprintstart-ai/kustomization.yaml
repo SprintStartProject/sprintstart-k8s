@@ -9,3 +9,16 @@ resources:
 images:
   - name: ghcr.io/sprintstartproject/sprintstart-ai
     newTag: dev
+
+# The base limit of 512Mi is not enough for bulk ingestion. Connecting a GitHub org and
+# embedding its artifacts pushes the service past the limit and the pod is OOMKilled
+# (exit code 137), which also tears down any in-flight SSE stream -- onboarding path
+# generation then fails with an opaque "java.io.IOException: closed".
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 1Gi
+    target:
+      kind: Deployment
+      name: sprintstart-ai
