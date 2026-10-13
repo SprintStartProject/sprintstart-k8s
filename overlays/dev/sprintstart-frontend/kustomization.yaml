@@ -6,6 +6,9 @@ namespace: sprintstart-dev
 resources:
   - ../../../base/sprintstart-frontend
   - ingress-default.yaml
+  - httproute-default.yaml
+  - httproute-dev-host.yaml
+  - backendtrafficpolicy.yaml
 
 images:
   - name: ghcr.io/sprintstartproject/sprintstart-frontend

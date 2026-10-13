@@ -1,0 +1,52 @@
+# Gateway auf cluster7 (Envoy Gateway, GatewayClass "eg").
+# NICHT von ArgoCD verwaltet: es gibt keine Application dafür. Manuell anwenden:
+#   kubectl apply -f cluster/sqa-gateway.yaml
+# Stand 2026-10-14. Der Listener "https-default" (443, ohne Hostname) ist nötig,
+# damit https://129.69.217.214/ (Zugriff per IP) funktioniert.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: sqa-gateway
+  namespace: envoy-gateway-system
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+      allowedRoutes: {namespaces: {from: All}}
+    - name: https-sprintstart
+      hostname: sprintstart.local
+      port: 443
+      protocol: HTTPS
+      allowedRoutes: {namespaces: {from: All}}
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - {group: "", kind: Secret, name: sprintstart-tls, namespace: sprintstart}
+    - name: https-sprintstart-dev
+      hostname: dev.sprintstart.local
+      port: 443
+      protocol: HTTPS
+      allowedRoutes: {namespaces: {from: All}}
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - {group: "", kind: Secret, name: sprintstart-tls, namespace: sprintstart-dev}
+    - name: https-sprintstart-keycloak
+      hostname: keycloak.sprintstart.local
+      port: 443
+      protocol: HTTPS
+      allowedRoutes: {namespaces: {from: All}}
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - {group: "", kind: Secret, name: sprintstart-tls, namespace: sprintstart}
+    - name: https-default
+      port: 443
+      protocol: HTTPS
+      allowedRoutes: {namespaces: {from: All}}
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - {group: "", kind: Secret, name: sprintstart-tls, namespace: sprintstart-dev}

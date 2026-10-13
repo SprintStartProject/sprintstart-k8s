@@ -1,0 +1,23 @@
+# Zugriff per IP (ohne Hostnamen); Gateway-API-Entsprechung von ingress-default.yaml.
+# Braucht den Listener "https-default" in cluster/sqa-gateway.yaml.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: sprintstart-default
+spec:
+  parentRefs:
+    - name: sqa-gateway
+      namespace: envoy-gateway-system
+  rules:
+    - matches:
+        - path: {type: PathPrefix, value: /auth/}
+      backendRefs:
+        - {name: sprintstart-keycloak, port: 8080}
+    - matches:
+        - path: {type: PathPrefix, value: /api/}
+      backendRefs:
+        - {name: sprintstart-backend, port: 8080}
+    - matches:
+        - path: {type: PathPrefix, value: /}
+      backendRefs:
+        - {name: sprintstart-frontend, port: 80}
