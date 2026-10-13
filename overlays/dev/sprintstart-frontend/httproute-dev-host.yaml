@@ -1,0 +1,16 @@
+# Zugriff über dev.sprintstart.local; Gateway-API-Entsprechung von base/.../ingress.yaml.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: sprintstart-dev
+spec:
+  hostnames:
+    - dev.sprintstart.local
+  parentRefs:
+    - name: sqa-gateway
+      namespace: envoy-gateway-system
+  rules:
+    - matches:
+        - path: {type: PathPrefix, value: /}
+      backendRefs:
+        - {name: sprintstart-frontend, port: 80}
